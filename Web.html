@@ -86,8 +86,11 @@
         <h1>记账本</h1>
         <form onsubmit="event.preventDefault(); cal_Function();">
             <div class="form-group">
+                <p id="hint">我是用来计算生活的各个事项的费用的。你可以像下面一样输入内容到文本框中，我会自动帮你计算总金额。如：
+                    <br>吃饭80睡觉60
+                    <br>洗澡70....</p>
                 <label for="message">金额总计: 0</label>
-                <textarea id="message" rows="5" oninput="cal_Function()" placeholder="输入你的事项以及内容，如吃饭80，睡觉60....我会自动计算总金额。"></textarea>
+                <textarea id="message" rows="5" oninput="cal_Function();saveContent()" placeholder="请输入你的事项以及内容。"></textarea>
             </div>
             <button type="submit" onclick="cal_Function()">提交(我是摆设)</button>
         </form>
@@ -106,6 +109,20 @@
             document.querySelector('label[for="message"]').textContent = '金额总计: 0';
         }
 
+    }
+        // 保存文本框内容到 localStorage
+    function saveContent() {
+        var inputText = document.getElementById("message").value;
+        localStorage.setItem('savedContent', inputText); // 将内容保存到 localStorage
+    }
+
+    // 页面加载时从 localStorage 恢复内容
+    window.onload = function() {
+        var savedContent = localStorage.getItem('savedContent'); // 从 localStorage 获取保存的内容
+        if (savedContent) {
+            document.getElementById("message").value = savedContent;
+            cal_Function(); // 加载时重新计算金额
+        }
     }
 </script>
 </body>
